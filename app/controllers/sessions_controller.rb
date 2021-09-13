@@ -13,4 +13,14 @@ class SessionsController < ApplicationController
 
     end
 
+    def show
+        user = User.find_by(id: session[:user_id])
+
+        if user
+            render json: user
+        else
+            render json: {message: "no user signed in"}
+        end
+    end
+
 end
