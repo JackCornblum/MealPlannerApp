@@ -11,6 +11,37 @@ class UsersController < ApplicationController
         end
     end
 
+    def recipes
+        user = User.find_by(id: session[:user_id])
+
+        if user
+            recipes = user.recipes
+            render json: recipes
+        else
+            render json: {message: "no user signed in"}
+        end
+    end
+
+    def ingredients
+        user = User.find_by(id: session[:user_id])
+
+        if user
+            recipes = user.recipes
+            if recipes.count > 0
+                ingredients = []
+                recipes.each do |r|
+                    ingreds = r.ingredients
+                    ingredients << ingreds
+                end
+                render json: ingredients
+            else
+                render json: {message: 'no recipes'}
+            end
+        else
+            render json: {message: 'no user signed in'}
+        end
+    end
+
     private 
     def user_params
         params.permit(:name, :password, :email)
